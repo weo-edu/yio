@@ -1,5 +1,6 @@
 var pit = require('..')
 var assert = require('assert')
+var yields = require('@weo-edu/yields')
 
 describe('pit', function () {
   var l
@@ -21,11 +22,12 @@ describe('pit', function () {
   })
 
   it('should iterate over generator like fns', function (done) {
-    var g = gen(function() {
-      return [11, 12, 13]
-    })
-    .yield(twos)
-    .yield(function() {
+    var g = yields(
+      function() {
+        return [11, 12, 13]
+      },
+      twos,
+      function() {
       return 3
     })
 
@@ -79,26 +81,3 @@ describe('pit', function () {
     l.push(val)
   }
 })
-
-
-function gen(fn) {
-  var arr = [fn]
-
-  function it() {
-    var idx = 0
-    return {
-      next: function (res) {
-        return idx < arr.length
-          ? {value: arr[idx++](res), done: false}
-          : {done: true}
-      }
-    }
-  }
-
-  it.yield = function (fn) {
-    arr.push(fn)
-    return it
-  }
-
-  return it
-}

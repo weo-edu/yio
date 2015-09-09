@@ -61,11 +61,13 @@ pit(dispatchFetch, function *() {
 
 ```
 
-### Generatorish
+### Yields
+
+Use pit with [yields](https://github.com/weo-edu/yields).
 
 ```js
 var pit = require('@woe-edu/pit')
-var gen = require('@weo-edu/gen')
+var yields = require('@weo-edu/yields')
 
 function log (val) {
   console.log('val', val)
@@ -77,15 +79,16 @@ function log (val) {
 //3
 pit(
   log,
-  gen(function () {
-    return 1
-  })
-  .yield(function () {
-    return 2
-  })
-  .yield(function () {
-    return 3
-  })
+  yields(
+    function () {
+      return 1
+    },
+    function () {
+      return 2
+    },
+    function () {
+      return 3
+    })
 )
 ```
 
