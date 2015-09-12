@@ -21,6 +21,17 @@ describe('pit', function () {
 
   })
 
+  it('should curry', function (done) {
+    pit(log)(function *() {
+      var res = yield [11, 12, 13]
+      yield twos()
+      yield 3
+    }).then(function() {
+      assert.deepEqual(l, [[11, 12, 13], 21, 22, 23, 3])
+      done()
+    })
+  })
+
   it('should iterate over generator like fns', function (done) {
     var g = yields(
       function() {
