@@ -79,16 +79,15 @@ function log (val) {
 //3
 pit(
   log,
-  yields(
-    function () {
-      return 1
-    },
-    function () {
-      return 2
-    },
-    function () {
-      return 3
-    })
+  yields(function () {
+    return 1
+  })
+  .yields(function () {
+    return 2
+  })
+  .yields(function () {
+    return 3
+  })
 )
 ```
 
