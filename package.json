@@ -6,10 +6,11 @@
   "license": "MIT",
   "main": "lib/index.js",
   "dependencies": {
-    "@weo-edu/yields": "^0.1.0",
+    "@weo-edu/is": "^0.2.0",
     "sliced": "^1.0.1"
   },
   "devDependencies": {
+    "@weo-edu/yields": "^0.1.2",
     "mocha": "2.x",
     "standard": "^4.0.0"
   },
