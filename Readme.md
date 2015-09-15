@@ -1,7 +1,7 @@
 
 # pit
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
+[![Codeship Status for weo-edu/pit](https://img.shields.io/codeship/49802aa0-3d77-0133-36b2-1ad104cd18d3/master.svg)](https://codeship.com/projects/102515) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
 Get pitted. Iterate into the pit.
 
