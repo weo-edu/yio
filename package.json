@@ -2,7 +2,7 @@
   "name": "@weo-edu/pit",
   "description": "Iterate into the pit",
   "repository": "git://github.com/weo-edu/tap-pipe.git",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "lib/index.js",
   "dependencies": {
