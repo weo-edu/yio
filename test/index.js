@@ -15,7 +15,7 @@ describe('pit', function () {
       yield twos()
       yield 3
     }).then(function() {
-      assert.deepEqual(l, [[11, 12, 13], 21, 22, 23, 3])
+      assert.deepEqual(l, [11, 12, 13, 21, 22, 23, 3])
       done()
     })
   })
@@ -115,13 +115,31 @@ describe('pit', function () {
     }
   })
 
+  it('should push run array yields in parallel', function (done) {
+    pit(addOne, function *(){
+      var res = yield [1, 2, 3]
+      res = yield res
+      assert.deepEqual(res, [3, 4, 5])
+    }).then(function() {
+      done()
+    })
+
+    function addOne(x) {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve(x + 1)
+        })
+      })
+    }
+  })
+
   it('should curry', function (done) {
     pit(log)(function *() {
       var res = yield [11, 12, 13]
       yield twos()
       yield 3
     }).then(function() {
-      assert.deepEqual(l, [[11, 12, 13], 21, 22, 23, 3])
+      assert.deepEqual(l, [11, 12, 13, 21, 22, 23, 3])
       done()
     })
   })
@@ -137,7 +155,7 @@ describe('pit', function () {
     })
 
     pit(log, g).then(function() {
-      assert.deepEqual(l, [[11, 12, 13], 21, 22, 23, 3])
+      assert.deepEqual(l, [11, 12, 13, 21, 22, 23, 3])
       done()
     }).catch(function(err) {console.log(err.stack)})
 

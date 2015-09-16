@@ -91,6 +91,34 @@ pit(
 )
 ```
 
+### Parallel Async
+
+```js
+var pit = require('@woe-edu/pit')
+var fetch = require('whatwg-fetch')
+
+function dispatchFetch (options) {
+  return fetch(options).then(function(res) {
+    return res.json()
+  })
+}
+
+//output:
+//josh
+//tio
+//elliot
+pit(dispatchFetch, function *() {
+  var userIds = yield {url: '/users', method: 'GET'}
+  var users = yield userIds.map(function (id) {
+    return {url: '/user/' + userId, method: 'GET'}
+  })
+  users.forEach(function () {
+    console.log(user.name)
+  })
+})
+
+```
+
 ## License
 
 The MIT License
