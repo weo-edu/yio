@@ -4,18 +4,21 @@
   "repository": "git://github.com/weo-edu/tap-pipe.git",
   "version": "0.1.2",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "src/index.js",
+  "scripts": {
+    "prepublish": "make build",
+    "postpublish": "make clean"
+  },
   "dependencies": {
     "@weo-edu/is": "^0.2.0",
-    "sliced": "^1.0.1"
+    "gen-flatten": "^0.2.0",
+    "gen-map-thunk": "^0.2.0",
+    "to-promise": "^0.1.1"
   },
   "devDependencies": {
-    "@weo-edu/yields": "^0.1.2",
-    "mocha": "2.x",
-    "standard": "^4.0.0"
-  },
-  "engines": {
-    "node": "~0.10.38",
-    "npm": "~2.9.0"
+    "babel-cli": "^6.1.2",
+    "babel-preset-es2015": "^6.1.2",
+    "standard": "^5.1.0",
+    "tape": "^4.2.2"
   }
 }
