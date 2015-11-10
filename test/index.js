@@ -1,4 +1,4 @@
-import pit from '..'
+import {yio, curry, wrap} from '..'
 import test from 'tape'
 
 
@@ -8,7 +8,7 @@ function before () {
 }
 
 test('should push respones', (t) => {
-  pit(addOne, function * (){
+  yio(addOne, function * () {
     var res = yield 1
     res = yield res
     t.equal(res, 3)
@@ -22,7 +22,7 @@ test('should push respones', (t) => {
 })
 
 test('should push async responses', (t) => {
-  pit(addOne, function * (){
+  yio(addOne, function * () {
     var res = yield 1
     res = yield res
     t.equal(res, 3)
@@ -41,7 +41,7 @@ test('should push async responses', (t) => {
 
 test('should flatten nested generators', (t) => {
   before()
-  pit(log, function * () {
+  yio(log, function * () {
     var res = yield [11, 12, 13]
     yield twos()
     yield 3
@@ -53,7 +53,7 @@ test('should flatten nested generators', (t) => {
 
 test('should map nested return value', (t) => {
   before()
-  pit(log, function * () {
+  yio(log, function * () {
     yield 1
     yield ones()
   }).then(function () {
@@ -63,7 +63,7 @@ test('should map nested return value', (t) => {
 })
 
 test('should map yielded array in parallel', (t) => {
-  pit(addOne, function * (){
+  yio(addOne, function * () {
     var res = yield [1, 2, 3]
     res = yield res
     t.deepEqual(res, [3, 4, 5])
@@ -81,18 +81,34 @@ test('should map yielded array in parallel', (t) => {
 })
 
 test('should not map yielded promises', (t) => {
-
-  t.end()
+  let mapped = false
+  yio(function () {
+    mapped = true
+  }, function * () {
+    return yield Promise.resolve(1)
+  }).then(function (v) {
+    t.equal(v, 1)
+    t.ok(!mapped)
+    t.end()
+  })
 })
 
 test('should not map yielded undefined', (t) => {
-
-  t.end()
+  let mapped = false
+  yio(function () {
+    mapped = true
+  }, function * () {
+    return yield
+  }).then(function (v) {
+    t.equal(v, undefined)
+    t.ok(!mapped)
+    t.end()
+  })
 })
 
 test('should curry', (t) => {
   before()
-  pit(log)(function * () {
+  curry(log)(function * () {
     var res = yield [11, 12, 13]
     yield twos()
     yield 3
@@ -103,8 +119,34 @@ test('should curry', (t) => {
 })
 
 test('should wrap', (t) => {
+  before()
+  wrap(log, function * (input) {
+    yield input
+  })(1).then(function () {
+    t.deepEqual(l, [1])
+    t.end()
+  })
+})
 
-  t.end()
+test('should wrap curry', (t) => {
+  before()
+  let c = curry(log)
+  wrap(c)(function * (input) {
+    yield input
+  })(1).then(function () {
+    t.deepEqual(l, [1])
+    t.end()
+  })
+})
+
+test('should curry wrap', (t) => {
+  before()
+  wrap(log)(function * (input) {
+    yield input
+  })(1).then(function () {
+    t.deepEqual(l, [1])
+    t.end()
+  })
 })
 
 

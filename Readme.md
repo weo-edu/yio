@@ -1,15 +1,18 @@
 
-# pit
+# yio
 
 [![Codeship Status for weo-edu/pit](https://img.shields.io/codeship/49802aa0-3d77-0133-36b2-1ad104cd18d3/master.svg)](https://codeship.com/projects/102515) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
-Get pitted. Iterate into the pit.
+Yield IO.
 
-[![Get pitted](http://img.youtube.com/vi/Y5ckCAUVOn0/0.jpg)](http://www.youtube.com/watch?v=Y5ckCAUVOn0)
+Yield makes it easy to write async code in a nice testable way. Yield takes two functions: `io` and `control`. `io` is responsible for performing io. It takes a single value and returns a promise. `control` is responsible for control flow. All values yielded by `control` are passed to `io` and the resolved promise is yielded. A great way to use `yio` is for `control` to yield action creators (ala redux) and for `io` to proces the action creators.
+
+yio is similar to [co](https://github.com/tj/co), except that it promots pushing io to the edges. The advantage of this is that all the complex logic can be done in `control` and `control` can be easily tested without performing io. No need for mocks or DI.
+
 
 ## Installation
 
-    $ npm install @weo-edu/pit
+    $ npm install yio
 
 
 ## Example
@@ -17,7 +20,7 @@ Get pitted. Iterate into the pit.
 ### Basic
 
 ```js
-var pit = require('@woe-edu/pit')
+import yio from 'yio'
 
 function log (val) {
   console.log('val', val)
@@ -27,7 +30,7 @@ function log (val) {
 //1
 //2
 //3
-pit(log, function *() {
+yio(log, function * () {
   yield 1
   yield 2
   yield 3
@@ -38,23 +41,21 @@ pit(log, function *() {
 ### Async
 
 ```js
-var pit = require('@woe-edu/pit')
-var fetch = require('whatwg-fetch')
+import yio from 'yio'
+import fetch from 'whatwg-fetch'
 
 function dispatchFetch (options) {
-  return fetch(options).then(function(res) {
-    return res.json()
-  })
+  return fetch(options).then((res) => res.json())
 }
 
 //output:
 //josh
 //tio
 //elliot
-pit(dispatchFetch, function *() {
-  var userIds = yield {url: '/users', method: 'GET'}
-  for (var userId in userIds) {
-    var user = yield {url: '/user/' + userId, method: 'GET'}
+yio(dispatchFetch, function * () {
+  let userIds = yield {url: '/users', method: 'GET'}
+  for (let userId in userIds) {
+    let user = yield {url: '/user/' + userId, method: 'GET'}
     console.log(user.name)
   }
 })
@@ -63,11 +64,11 @@ pit(dispatchFetch, function *() {
 
 ### Yields
 
-Use pit with [yields](https://github.com/weo-edu/yields).
+Use yio with [yields](https://github.com/weo-edu/yields).
 
 ```js
-var pit = require('@woe-edu/pit')
-var yields = require('@weo-edu/yields')
+import yio from 'yio'
+import yields from 'yields'
 
 function log (val) {
   console.log('val', val)
@@ -94,8 +95,8 @@ pit(
 ### Parallel Async
 
 ```js
-var pit = require('@woe-edu/pit')
-var fetch = require('whatwg-fetch')
+import yio from 'yio'
+import fetch from 'whatwg-fetch'
 
 function dispatchFetch (options) {
   return fetch(options).then(function(res) {
@@ -107,12 +108,10 @@ function dispatchFetch (options) {
 //josh
 //tio
 //elliot
-pit(dispatchFetch, function *() {
-  var userIds = yield {url: '/users', method: 'GET'}
-  var users = yield userIds.map(function (id) {
-    return {url: '/user/' + userId, method: 'GET'}
-  })
-  users.forEach(function () {
+yio(dispatchFetch, function * () {
+  let userIds = yield {url: '/users', method: 'GET'}
+  let users = yield userIds.map(userId => ({url: '/user/' + userId, method: 'GET'}))
+  users.forEach(() => {
     console.log(user.name)
   })
 })

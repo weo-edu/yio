@@ -1,7 +1,7 @@
 {
-  "name": "@weo-edu/pit",
+  "name": "yio",
   "description": "Iterate into the pit",
-  "repository": "git://github.com/weo-edu/tap-pipe.git",
+  "repository": "git://github.com/weo-edu/yio.git",
   "version": "0.1.2",
   "license": "MIT",
   "main": "src/index.js",
