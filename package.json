@@ -2,9 +2,9 @@
   "name": "yio",
   "description": "Iterate into the pit",
   "repository": "git://github.com/weo-edu/yio.git",
-  "version": "0.2.1",
+  "version": "0.2.0",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "prepublish": "make build",
     "postpublish": "make clean"
