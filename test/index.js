@@ -1,4 +1,4 @@
-import {yio, curry, wrap} from '..'
+import {yio, curry, wrap} from '../src'
 import test from 'tape'
 
 
