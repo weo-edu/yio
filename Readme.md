@@ -78,7 +78,7 @@ function log (val) {
 //1
 //2
 //3
-pit(
+yio(
   log,
   yields(function () {
     return 1
